@@ -12,9 +12,33 @@ class BookService{
         return $books;
     }
 
-    public function getUserBooks($id)
+    public function getUserBooks($id, $search, $sort)
     {
-        return Book::with('picture')->where('userId', $id)->get();
+        return Book::with('picture')
+            ->when($search, function ($query, $search) {
+                return $query->where('title', 'like', '%' . $search . '%');
+            })
+            ->where('userId', $id)
+            ->when($sort, function ($query, $sort) {
+                switch ($sort) {
+                    case 'author_asc':
+                        $query->orderBy('author', 'asc');
+                        break;
+                    case 'author_desc':
+                        $query->orderBy('author', 'desc');
+                        break;
+                    case 'title_asc':
+                        $query->orderBy('title', 'asc');
+                        break;
+                    case 'title_desc':
+                        $query->orderBy('title', 'desc');
+                        break;
+                    default:
+                        $query->orderBy('id', 'asc');
+                        break;
+                }
+            })
+            ->get();
     }
 
     /**

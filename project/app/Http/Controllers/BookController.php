@@ -6,6 +6,7 @@ use App\Http\Middleware\Logger;
 use App\Services\BookService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use function Symfony\Component\String\s;
 
 class BookController extends Controller
 {
@@ -20,8 +21,13 @@ class BookController extends Controller
      */
     public function index()
     {
+        $search = request()->input('search');
+        $sort = request()->input('sort');
+
+
+
         $userId = $this->getUser();
-        $books = $this->bookService->getUserBooks($userId);
+        $books = $this->bookService->getUserBooks($userId, $search, $sort);
         return view('getBook', ['books' => $books]);
     }
 
