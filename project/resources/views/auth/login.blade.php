@@ -10,7 +10,7 @@
 <body>
 
 <div class="container mt-5">
-    <!-- Dashboard -->
+    <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav ml-auto">
@@ -32,6 +32,15 @@
                 </div>
                 <div class="card-body">
                     <!-- Flash Messages -->
+                    @if(session('status'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('status') }}
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    @endif
+
                     @if(session('success'))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                             {{ session('success') }}
@@ -66,6 +75,11 @@
                             <button type="submit" class="btn btn-primary btn-block">Login</button>
                         </div>
                     </form>
+
+                    <!-- Reset Password Link -->
+                    <div class="form-group text-center mt-3">
+                        <a href="{{ route('password.request') }}" class="btn btn-link">Forgot Your Password?</a>
+                    </div>
                 </div>
             </div>
         </div>

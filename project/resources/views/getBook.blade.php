@@ -16,7 +16,35 @@
         <a href="{{ route('logout') }}" class="btn btn-secondary btn-sm">Logout</a>
     </div>
 
-    <a href="{{ route('books.create') }}" class="btn btn-warning btn-sm">Add a book</a>
+    <!-- Search Form and Sort Filter -->
+    <form action="{{ route('books.index') }}" method="GET" class="mb-3">
+        <div class="row">
+            <!-- Search input -->
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input type="text" name="search" class="form-control" placeholder="Search by title" value="{{ request()->get('search') }}">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                </div>
+            </div>
+
+            <!-- Sort filter -->
+            <div class="col-md-6">
+                <div class="input-group">
+                    <label class="input-group-text" for="sort">Sort by:</label>
+                    <select name="sort" id="sort" class="form-select" onchange="this.form.submit()">
+                        <option value="">Select</option>
+                        <option value="author_asc" {{ request()->get('sort') == 'author_asc' ? 'selected' : '' }}>Author (A-Z)</option>
+                        <option value="author_desc" {{ request()->get('sort') == 'author_desc' ? 'selected' : '' }}>Author (Z-A)</option>
+                        <option value="title_asc" {{ request()->get('sort') == 'title_asc' ? 'selected' : '' }}>Title (A-Z)</option>
+                        <option value="title_desc" {{ request()->get('sort') == 'title_desc' ? 'selected' : '' }}>Title (Z-A)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+    <a href="{{ route('books.create') }}" class="btn btn-warning btn-sm mb-3">Add a book</a>
 
     @if (session('success'))
         <div class="alert alert-success">

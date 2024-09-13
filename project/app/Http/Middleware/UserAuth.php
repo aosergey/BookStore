@@ -4,9 +4,11 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use function Symfony\Component\Translation\t;
 
 class UserAuth
 {
@@ -23,7 +25,12 @@ class UserAuth
                 return redirect()->route('login');
             }
             else{
-                return $next($request);
+                if (JWTAuth::check()) {
+                    return $next($request);
+                }
+                else{
+                    return redirect()->route('login');
+                }
             }
         } catch (JWTException $e) {
             try {
@@ -32,11 +39,11 @@ class UserAuth
                 return $next($request);
             }
             else{
-                return response()->json(['error' => 'User not found'], 404);
+                return redirect()->route('login');
             }
             }
             catch (JWTException $e) {
-                return response()->json(['error' => 'Token is invalid or expired'], 401);
+                return redirect()->route('login');
             }
         }
     }

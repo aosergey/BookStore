@@ -17,7 +17,15 @@
                     <h4>Dashboard</h4>
                 </div>
                 <div class="card-body">
+                    <!-- Success Message for Email Verification -->
+                    @if(session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+
                     <p>Welcome to your dashboard!</p>
+
                     <!-- My Books Button -->
                     <form action="{{ route('books.index') }}" method="GET">
                         @csrf
@@ -30,7 +38,6 @@
                             <strong>JWT Token:</strong> <span id="jwt-token">{{ session('jwt_token') }}</span>
                         </div>
                     @endif
-
 
                     <!-- Logout Button -->
                     <form action="{{ route('logout') }}" method="POST">
